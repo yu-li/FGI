@@ -121,6 +121,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 
 	memFreeDouble3(image_filtered);
 	if(image_guidance) memFreeDouble3(image_guidance);
+	free(BLFKernelI);
 }
 
 void FGS(double*** image, double*** joint_image, double sigma, double lambda, int solver_iteration, double solver_attenuation)

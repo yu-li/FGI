@@ -6,11 +6,10 @@ mask = zeros(size(uInit));
 mask(1:2:end,1:2:end) = motionIn(:,:,3);
 
 %% Guided Interpolation - Eq.(4)
-U = FGS(uInit.*mask, param.FGS1_SIGMA, param.FGS1_LAMDA^2, imgRef, 3, 4);
-V = FGS(vInit.*mask, param.FGS1_SIGMA, param.FGS1_LAMDA^2, imgRef, 3, 4);
-M = FGS(mask, param.FGS1_SIGMA, param.FGS1_LAMDA^2, imgRef, 3, 4);
-uOut = U./M;
-vOut = V./M;
+UVin = cat(3, uInit.*mask, vInit.*mask, mask);
+UVout = FGS(UVin, param.FGS1_SIGMA, param.FGS1_LAMDA^2, imgRef, 3, 4);
+uOut = UVout(:,:,1)./UVout(:,:,3);
+vOut = UVout(:,:,2)./UVout(:,:,3);
 
 %% Joint filtering - Eq.(6)
 uOut = FGS(uInit, param.FGS2_SIGMA, param.FGS2_LAMDA^2, uOut, 3, 4);
